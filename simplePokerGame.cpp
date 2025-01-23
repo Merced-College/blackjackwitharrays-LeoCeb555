@@ -21,6 +21,8 @@ int wins = 0;
 int losses = 0;
 int draws = 0;
 
+bool busted = false;
+
 //initialize deck
 void initializeDeck() {
     for (int i = 0; i < 52; i++) {
@@ -117,7 +119,6 @@ void determineWinner(int playerTotal, int dealerTotal) {
         draws++;
     } else {
         cout << "Dealer wins!" << endl;
-        losses++;
     }
 }
 
@@ -125,6 +126,7 @@ int main() {
     
     string continueGame = "yes";
     while (continueGame != "no"){
+        busted = false;
         initializeDeck();
         shuffleDeck();
   
@@ -133,10 +135,13 @@ int main() {
   
         playerTotal = playerTurn(playerTotal);
         if (playerTotal > 21) {
-        cout << "You busted! Dealer wins." << endl;
+            cout << "You busted! Dealer wins." << endl;
+            busted = true;
+            losses++;
         }
         dealerTotal = dealerTurn(dealerTotal);
-        determineWinner(playerTotal, dealerTotal);
+        if(!busted)
+            determineWinner(playerTotal, dealerTotal);
 
         //Asks user if they'd like to continue playing, modifies continueGame variable to check if game should be repeated
         cout << "Would you like to continue playing?" << endl;
